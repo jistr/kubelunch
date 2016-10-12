@@ -1,0 +1,16 @@
+- name: update packages
+  dnf:
+    name: '*'
+    state: latest
+
+- name: install required packages
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - golang
+    - gcc-go
+    - libselinux-python
+    - screen
+    - tmux
+    - vagrant-libvirt
