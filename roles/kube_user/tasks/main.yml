@@ -1,0 +1,38 @@
+- name: create the kube user
+  user:
+    name: kube
+    home: "{{ kube_user_home }}"
+    state: present
+
+- name: allow passwordless sudo for the kube user
+  copy:
+    content: |
+      kube ALL=(root) NOPASSWD:ALL
+    dest: /etc/sudoers.d/kube
+    mode: 0440
+
+- name: allow the kube user to manage libvirt
+  copy:
+    content: |
+      [Libvirt management for kube user]
+      Identity=unix-user:kube
+      Action=org.libvirt.unix.manage
+      ResultAny=yes
+      ResultInactive=yes
+      ResultActive=yes
+    dest: /etc/polkit-1/localauthority/50-local.d/50-kube-libvirt.pkla
+    mode: 0644
+
+- name: set LIBVIRT_DEFAULT_URI for the kube user
+  lineinfile:
+    dest: "{{ kube_user_home }}/.bashrc"
+    regexp: '^export LIBVIRT_DEFAULT_URI='
+    line: 'export LIBVIRT_DEFAULT_URI="qemu:///system"'
+    insertafter: EOF
+    create: yes
+    mode: 0644
+    owner: kube
+    group: kube
+
+- name: copy authorized_keys from root user
+  include: copy_authorized_keys.yml

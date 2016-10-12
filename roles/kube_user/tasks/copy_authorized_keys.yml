@@ -1,0 +1,33 @@
+- name: kube user ssh directory
+  file:
+    path: "{{ kube_user_home }}/.ssh"
+    state: directory
+    owner: kube
+    group: kube
+    mode: 0700
+
+- name: kube user ssh directory
+  file:
+    path: "{{ kube_user_home }}/.ssh"
+    state: directory
+    owner: kube
+    group: kube
+    mode: 0700
+
+- name: fact kube_keys_in_sync
+  shell: diff /root/.ssh/authorized_keys {{ kube_user_home }}/.ssh/authorized_keys
+  register: kube_keys_in_sync
+  failed_when: false
+  changed_when: false
+
+- name: copy root authorized keys
+  shell: cp /root/.ssh/authorized_keys {{ kube_user_home }}/.ssh/authorized_keys
+  when: kube_keys_in_sync.rc != 0
+
+- name: kube user authorized keys permissions
+  file:
+    path: "{{ kube_user_home }}/.ssh/authorized_keys"
+    state: file
+    owner: kube
+    group: kube
+    mode: 0600

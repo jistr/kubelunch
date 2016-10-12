@@ -1,3 +1,5 @@
 - hosts: kube_host
   roles:
     - kubelunch_prereq
+    - kube_user
+    - home_libvirt_storage
