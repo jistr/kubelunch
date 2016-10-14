@@ -1,0 +1,2 @@
+docker_machine_install_method: binary
+docker_machine_version: v0.8.2

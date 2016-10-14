@@ -1,0 +1,3 @@
+- name: install docker_machine_kvm from official binary build
+  include: install-binary.yml
+  when: "docker_machine_kvm_install_method == 'binary'"

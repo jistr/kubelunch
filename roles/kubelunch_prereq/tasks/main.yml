@@ -8,9 +8,11 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - git
     - golang
     - gcc-go
     - libselinux-python
+    - mercurial
     - screen
     - tmux
     - vagrant-libvirt

@@ -1,0 +1,5 @@
+- name: download docker_machine binary
+  get_url:
+    url: "https://github.com/docker/machine/releases/download/{{ docker_machine_version }}/docker-machine-Linux-x86_64"
+    dest: /usr/local/bin/docker-machine
+    mode: 0755

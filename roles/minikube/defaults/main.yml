@@ -1,0 +1,4 @@
+install_minikube: false
+
+minikube_install_method: binary
+minikube_version: v0.11.0

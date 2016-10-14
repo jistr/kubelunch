@@ -1,0 +1,11 @@
+- name: install packages needed for minikube
+  dnf:
+    name: "{{ item }}"
+  with_items:
+    - kubernetes-client
+
+- name: download minikube binary
+  get_url:
+    url: "https://storage.googleapis.com/minikube/releases/{{ minikube_version }}/minikube-linux-amd64"
+    dest: /usr/local/bin/minikube
+    mode: 0755

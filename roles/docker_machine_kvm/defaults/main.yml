@@ -1,0 +1,2 @@
+docker_machine_kvm_install_method: binary
+docker_machine_kvm_version: v0.7.0

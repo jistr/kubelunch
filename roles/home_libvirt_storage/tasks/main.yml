@@ -1,6 +1,10 @@
 ---
 - name: remove libvirt image storage directory if it is a directory
+  # not using file module because we don't want it deleted if it's not empty
   shell: /usr/bin/rmdir /var/lib/libvirt/images || true
+  args:
+    warn: no
+  changed_when: false
 
 - name: create a directory for libvirt image storage in home partition
   file:

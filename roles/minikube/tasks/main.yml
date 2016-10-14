@@ -1,0 +1,3 @@
+- name: install minikube from official binary build
+  include: install-binary.yml
+  when: "minikube_install_method == 'binary'"

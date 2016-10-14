@@ -3,3 +3,5 @@
     - kubelunch_prereq
     - kube_user
     - home_libvirt_storage
+    - role: minikube
+      when: install_minikube|bool

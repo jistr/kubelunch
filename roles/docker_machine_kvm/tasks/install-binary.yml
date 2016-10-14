@@ -1,0 +1,10 @@
+- name: ensure virtlogd.socket is present
+  service:
+    name: virtlogd.socket
+    state: running
+
+- name: download docker_machine_kvm binary
+  get_url:
+    url: "https://github.com/dhiltgen/docker-machine-kvm/releases/download/{{ docker_machine_kvm_version }}/docker-machine-driver-kvm"
+    dest: /usr/local/bin/docker-machine-driver-kvm
+    mode: 0755
