@@ -1,0 +1,4 @@
+install_vagrant_kubernetes: true
+
+vagrant_kubernetes_fedora_box_release: 24
+vagrant_kubernetes_fedora_box_url: https://download.fedoraproject.org/pub/fedora/linux/releases/24/CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-24-1.2.x86_64.vagrant-libvirt.box

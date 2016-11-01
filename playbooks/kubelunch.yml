@@ -5,3 +5,5 @@
     - home_libvirt_storage
     - role: minikube
       when: install_minikube|bool
+    - role: vagrant_kubernetes
+      when: install_vagrant_kubernetes|bool

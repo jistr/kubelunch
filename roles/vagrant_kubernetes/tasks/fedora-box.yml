@@ -1,0 +1,26 @@
+- name: fact fedora box present
+  shell: vagrant box list | grep fedora{{ vagrant_kubernetes_fedora_box_release }}
+  become: yes
+  become_user: kube
+  register: fedora_box_present
+  failed_when: false
+  changed_when: false
+
+- name: fetch fedora vagrant box
+  get_url:
+    url: "{{ vagrant_kubernetes_fedora_box_url }}"
+    dest: /home/kube/fedora{{ vagrant_kubernetes_fedora_box_release }}.box
+  become: yes
+  become_user: kube
+  when: fedora_box_present.rc != 0
+
+- name: add fedora vagrant box
+  shell: "vagrant box add --name fedora{{ vagrant_kubernetes_fedora_box_release }} /home/kube/fedora{{ vagrant_kubernetes_fedora_box_release }}.box"
+  become: yes
+  become_user: kube
+  when: fedora_box_present.rc != 0
+
+- name: remove temporary fedora vagrant box file
+  file:
+    path: /home/kube/fedora{{ vagrant_kubernetes_fedora_box_release }}.box
+    state: absent

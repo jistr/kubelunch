@@ -1,0 +1,13 @@
+- name: clone/update vagrant-kubernetes
+  git:
+    repo: https://github.com/jistr/vagrant-kubernetes
+    dest: /home/kube/vagrant-kubernetes
+    remote: upstream
+
+- name: correct ownership of vagrant-kubernetes dir
+  file:
+    path: /home/kube/vagrant-kubernetes
+    state: directory
+    owner: kube
+    group: kube
+    recurse: yes
