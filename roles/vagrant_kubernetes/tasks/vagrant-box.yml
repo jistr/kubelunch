@@ -1,0 +1,26 @@
+- name: fact box present
+  shell: vagrant box list | grep {{ vagrant_kubernetes_box_name }}
+  become: yes
+  become_user: kube
+  register: vagrant_box_present
+  failed_when: false
+  changed_when: false
+
+- name: fetch vagrant box
+  get_url:
+    url: "{{ vagrant_kubernetes_box_url }}"
+    dest: /home/kube/{{ vagrant_kubernetes_box_name }}.box
+  become: yes
+  become_user: kube
+  when: vagrant_box_present.rc != 0
+
+- name: add vagrant box
+  shell: "vagrant box add --name {{ vagrant_kubernetes_box_name }} /home/kube/{{ vagrant_kubernetes_box_name }}.box"
+  become: yes
+  become_user: kube
+  when: vagrant_box_present.rc != 0
+
+- name: remove temporary vagrant box file
+  file:
+    path: /home/kube/{{ vagrant_kubernetes_box_name }}.box
+    state: absent

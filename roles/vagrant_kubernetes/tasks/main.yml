@@ -1,5 +1,5 @@
-- name: install fedora vagrant box
-  include: fedora-box.yml
+- name: install desired vagrant box
+  include: vagrant-box.yml
 
 - name: install vagrant-kubernetes from source
   include: install-source.yml
