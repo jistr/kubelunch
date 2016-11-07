@@ -1,4 +1,7 @@
 install_vagrant_kubernetes: true
 
-vagrant_kubernetes_box_name: fedora24
-vagrant_kubernetes_box_url: https://download.fedoraproject.org/pub/fedora/linux/releases/24/CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-24-1.2.x86_64.vagrant-libvirt.box
+vagrant_kubernetes_box_name: centos7
+vagrant_kubernetes_box_url: http://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-x86_64-Vagrant-1609_01.LibVirt.box
+# No longer used values for fedora24:
+# vagrant_kubernetes_box_name: fedora24
+# vagrant_kubernetes_box_url: https://download.fedoraproject.org/pub/fedora/linux/releases/24/CloudImages/x86_64/images/Fedora-Cloud-Base-Vagrant-24-1.2.x86_64.vagrant-libvirt.box
