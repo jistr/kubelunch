@@ -1,4 +1,4 @@
-install_vagrant_kubernetes: true
+install_vagrant_kubernetes: false
 
 vagrant_kubernetes_box_name: centos7
 vagrant_kubernetes_box_url: http://cloud.centos.org/centos/7/vagrant/x86_64/images/CentOS-7-Vagrant-1509-x86_64-01.LibVirt.box

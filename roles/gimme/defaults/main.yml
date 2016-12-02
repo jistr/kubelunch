@@ -1,0 +1,5 @@
+install_gimme: true
+gimme_go_version: '1.7'
+gimme_go_packages:
+  - github.com/tools/godep
+  - github.com/jteeuwen/go-bindata/go-bindata

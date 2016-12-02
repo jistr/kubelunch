@@ -1,0 +1,52 @@
+- name: ensure kube user bin directory exists
+  file:
+    path: "{{ kube_user_home }}/bin"
+    state: directory
+    owner: kube
+    group: kube
+    mode: 0755
+
+- name: fetch gimme from github
+  get_url:
+    url: https://raw.githubusercontent.com/travis-ci/gimme/master/gimme
+    dest: "{{ kube_user_home }}/bin/gimme"
+    owner: kube
+    group: kube
+    mode: 0755
+
+- name: gimme package requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - tar
+
+- name: install go
+  shell: |
+    GIMME_GO_VERSION="{{ gimme_go_version }}" {{ kube_user_home }}/bin/gimme > {{ kube_user_home }}/gimmerc
+  args:
+    creates: "{{ kube_user_home }}/gimmerc"
+  become: yes
+  become_user: kube
+
+- name: gimmerc gopath
+  lineinfile:
+    dest: "{{ kube_user_home }}/gimmerc"
+    regexp: '^export GOPATH=$HOME/go'
+    line: 'export GOPATH=$HOME/go'
+    insertafter: EOF
+
+- name: gimmerc gopath bin into $PATH
+  lineinfile:
+    dest: "{{ kube_user_home }}/gimmerc"
+    regexp: '^export PATH=$PATH:$GOPATH/bin'
+    line: 'export PATH=$PATH:$GOPATH/bin'
+    insertafter: EOF
+
+- name: install basic go packages
+  shell: |
+    source {{ kube_user_home }}/gimmerc
+    go get -u {{ item }}
+  with_items: "{{ gimme_go_packages }}"
+  become: yes
+  become_user: kube

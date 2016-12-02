@@ -7,3 +7,5 @@
       when: install_minikube|bool
     - role: vagrant_kubernetes
       when: install_vagrant_kubernetes|bool
+    - role: gimme
+      when: install_gimme|bool
