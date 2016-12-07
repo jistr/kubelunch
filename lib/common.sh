@@ -17,10 +17,16 @@ function generate_hosts_file() {
         exit 1
     fi
 
+    if [ "$KUBELUNCH_FQDN" == "localhost" ]; then
+        ANSIBLE_CONNECTION=local
+    else
+        ANSIBLE_CONNECTION=ssh
+    fi
+
     mkdir "$DIR/tmp" &> /dev/null || true
     echo "$TEMPORARY_HOSTS_BANNER" > "$1"
     echo "[kube_host]" >> "$1"
-    echo "$KUBELUNCH_FQDN  ansible_ssh_user=root" >> "$1"
+    echo "$KUBELUNCH_FQDN  ansible_connection=$ANSIBLE_CONNECTION  ansible_ssh_user=root" >> "$1"
 }
 
 # removes hosts file if it contains $TEMPORARY_HOSTS_BANNER
