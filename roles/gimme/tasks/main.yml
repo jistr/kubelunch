@@ -32,14 +32,14 @@
 - name: gimmerc gopath
   lineinfile:
     dest: "{{ kube_user_home }}/gimmerc"
-    regexp: '^export GOPATH=$HOME/go'
+    regexp: '^export GOPATH=\$HOME/go'
     line: 'export GOPATH=$HOME/go'
     insertafter: EOF
 
 - name: gimmerc gopath bin into $PATH
   lineinfile:
     dest: "{{ kube_user_home }}/gimmerc"
-    regexp: '^export PATH=$PATH:$GOPATH/bin'
+    regexp: '^export PATH=\$PATH:\$GOPATH/bin'
     line: 'export PATH=$PATH:$GOPATH/bin'
     insertafter: EOF
 
