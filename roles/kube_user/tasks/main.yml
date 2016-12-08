@@ -38,7 +38,7 @@
   lineinfile:
     dest: "/etc/security/limits.conf"
     regexp: '^kube hard nofile'
-    line: '^kube hard nofile 10000'
+    line: 'kube hard nofile 10000'
     insertafter: EOF
 
 - name: copy authorized_keys from root user
