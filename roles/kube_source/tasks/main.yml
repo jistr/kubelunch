@@ -63,11 +63,15 @@
   with_items:
     - docker
 
-- name: start docker
+- name: start necessary services
   service:
-    name: docker
+    name: "{{ item }}"
     state: running
     enabled: yes
+  with_items:
+    - docker
+    - libvirtd
+    - virtlogd
 
 - name: chown docker socket to kube group
   file:
