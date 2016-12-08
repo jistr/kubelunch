@@ -1,0 +1,75 @@
+- name: clone kubernetes repo if not present
+  git:
+    repo: https://github.com/kubernetes/kubernetes
+    dest: "{{ kube_user_home }}/kubernetes"
+    update: no
+  become: yes
+  become_user: kube
+
+- name: check whether kubernetes Vagrantfile needs patching
+  shell: |
+    grep KUBERNETES_VAGRANT_RSYNC_ARGS "{{ kube_user_home }}/kubernetes/Vagrantfile"
+  register: kubernetes_vagrantfile_patched
+  changed_when: false
+  failed_when: false
+
+- name: install patch command
+  package:
+    name: patch
+    state: present
+  when: kubernetes_vagrantfile_patched.rc != 0
+
+- name: patch kubernetes Vagrantfile
+  shell: |
+    cd {{ kube_user_home }}/kubernetes
+    curl 'https://patch-diff.githubusercontent.com/raw/kubernetes/kubernetes/pull/36740.patch' \
+        | patch -p1
+  become: yes
+  become_user: kube
+  when: kubernetes_vagrantfile_patched.rc != 0
+
+- name: write kuberc
+  copy:
+    dest: /home/kube/kuberc
+    content: |
+      export PATH=${PATH}:/home/kube/kubernetes/third_party/etcd
+      export KUBERNETES_PROVIDER=vagrant
+      export VAGRANT_DEFAULT_PROVIDER=libvirt
+      export KUBERNETES_VAGRANT_USE_RSYNC=true
+      export KUBERNETES_VAGRANT_RSYNC_ARGS='--verbose --archive --delete -z --links'
+      export KUBERNETES_VAGRANT_RSYNC_EXCLUDE='.git/ _output/dockerized/ _output/images/ _output/local _output/release-stage'
+      export NUM_NODES=4
+      alias kubectl=/home/kube/kubernetes/_output/bin/kubectl
+      ulimit -n 10000
+    owner: kube
+    group: kube
+    mode: 0644
+
+- name: install etcd the kube way
+  shell: |
+    cd {{ kube_user_home }}/kubernetes
+    source ~/gimmerc
+    source ~/kuberc
+    ./hack/install-etcd.sh
+  args:
+    creates: /home/kube/kubernetes/third_party/etcd
+  become: yes
+  become_user: kube
+
+- name: install build deps
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker
+
+- name: start docker
+  service:
+    name: docker
+    state: running
+    enabled: yes
+
+- name: chown docker socket to kube group
+  file:
+    path: /var/run/docker.sock
+    group: kube

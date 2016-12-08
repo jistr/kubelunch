@@ -9,3 +9,5 @@
       when: install_vagrant_kubernetes|bool
     - role: gimme
       when: install_gimme|bool
+    - role: kube_source
+      when: install_kube_source
