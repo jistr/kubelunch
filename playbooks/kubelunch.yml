@@ -13,3 +13,5 @@
       when: install_kube_source|bool
     - role: kolla_source
       when: install_kolla_source|bool
+    - role: docker_registry
+      when: install_docker_registry|bool

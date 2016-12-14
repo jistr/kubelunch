@@ -1,0 +1,31 @@
+- name: install docker registry
+  package:
+    name: docker-distribution
+    state: installed
+
+# make the registry reachable for all virtualized stuff (kubernetes, kolla)
+# but prevent random access from outside
+- name: disallow registry port 5000 on the default interface ipv4
+  iptables:
+    chain: INPUT
+    in_interface: "{{ ansible_default_ipv4.interface }}"
+    ip_version: ipv4
+    protocol: tcp
+    destination_port: 5000
+    jump: REJECT
+    comment: deny registry access from outside ipv4
+
+- name: disallow registry port 5000 on the default interface ipv6
+  iptables:
+    chain: INPUT
+    in_interface: "{{ ansible_default_ipv6.interface }}"
+    ip_version: ipv6
+    protocol: tcp
+    destination_port: 5000
+    jump: REJECT
+    comment: deny registry access from outside ipv6
+
+- name: start docker-distribution service
+  service:
+    name: docker-distribution
+    state: running
