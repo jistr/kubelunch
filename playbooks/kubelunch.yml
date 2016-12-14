@@ -11,3 +11,5 @@
       when: install_gimme|bool
     - role: kube_source
       when: install_kube_source|bool
+    - role: kolla_source
+      when: install_kolla_source|bool
