@@ -1,0 +1,3 @@
+- name: install helm from upstream release
+  include: install_upstream_binary.yml
+  when: "helm_install_method == 'upstream_binary'"

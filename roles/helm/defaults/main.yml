@@ -1,0 +1,3 @@
+install_helm: true
+helm_install_method: upstream_binary
+helm_version: 2.1.3
