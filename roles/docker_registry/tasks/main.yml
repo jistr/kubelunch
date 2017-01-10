@@ -1,5 +1,5 @@
-  package:
 - name: install docker registry
+  package:
     name: docker-distribution
     state: installed
 
