@@ -1,6 +1,6 @@
 - name: clone kolla repo if not present
   git:
-    repo: https://github.com/kolla/kolla
+    repo: https://github.com/openstack/kolla
     dest: "{{ kube_user_home }}/kolla"
     update: no
   become: yes
