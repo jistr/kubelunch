@@ -76,3 +76,21 @@
   file:
     path: /var/run/docker.sock
     group: kube
+
+- name: set iptable rules for nfs
+  iptables:
+    chain: INPUT
+    in_interface: "!{{ ansible_default_ipv4.interface }}"
+    ip_version: ipv4
+    protocol: "{{item.protocol}}"
+    destination_port: "{{item.port}}"
+    jump: ALLOW
+    comment: allow nfs mounts
+  with_items:
+    - { port: 111, protocol: 'udp' }
+    - { port: 111, protocol: 'tcp' }
+    - { port: 2049, protocol: 'udp' }
+    - { port: 2049, protocol: 'tcp' }
+    - { port: 20048, protocol: 'udp' }
+    - { port: 20048, protocol: 'tcp' }
+  when: ansible_default_ipv4
