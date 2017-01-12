@@ -83,7 +83,7 @@
     ip_version: ipv4
     protocol: "{{item.protocol}}"
     destination_port: "{{item.port}}"
-    jump: ALLOW
+    jump: ACCEPT
     comment: allow nfs mounts
   with_items:
     - { port: 111, protocol: 'udp' }
