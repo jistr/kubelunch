@@ -37,6 +37,7 @@
       export VAGRANT_DEFAULT_PROVIDER=libvirt
       export KUBERNETES_VAGRANT_USE_NFS=true
       export NUM_NODES=4
+      export KUBERNETES_NODE_MEMORY=5120
       export EXTRA_DOCKER_OPTS='--insecure-registry 192.168.0.0/16'
       ulimit -n 10000
     owner: kube
