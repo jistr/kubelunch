@@ -18,7 +18,12 @@
     - tmux
     - vagrant-libvirt
 
+- name: get vagrant-libvirt gem dir
+  shell: ls /usr/share/vagrant/gems/gems | grep ^vagrant-libvirt-
+  register: r_vagrant_libvirt_gem_dir
+  changed_when: false
+
 # remove the workaround when possible -- i fixed this upstream,
 # but it's not in packages yet
 - name: TEMPORARY vagrant fixup
-  shell: sed -i -e 's/\(config.default_prefix.to_s\)$/\1.dup/' /usr/share/vagrant/gems/gems/vagrant-libvirt-0.0.32/lib/vagrant-libvirt/action/set_name_of_domain.rb
+  shell: sed -i -e 's/\(config.default_prefix.to_s\)\(\.dup\)\?\(.*\)$/\1.dup\3/' /usr/share/vagrant/gems/gems/{{ r_vagrant_libvirt_gem_dir.stdout }}/lib/vagrant-libvirt/action/set_name_of_domain.rb
