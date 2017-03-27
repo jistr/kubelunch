@@ -14,6 +14,7 @@
     - gcc-go
     - libselinux-python
     - mercurial
+    - nfs-utils
     - screen
     - tmux
     - vagrant-libvirt
@@ -27,3 +28,12 @@
 # but it's not in packages yet
 - name: TEMPORARY vagrant fixup
   shell: sed -i -e 's/\(config.default_prefix.to_s\)\(\.dup\)\?\(.*\)$/\1.dup\3/' /usr/share/vagrant/gems/gems/{{ r_vagrant_libvirt_gem_dir.stdout }}/lib/vagrant-libvirt/action/set_name_of_domain.rb
+
+- name: start services required for NFS
+  service:
+    name: "{{ item }}"
+    state: running
+  with_items:
+    - rpcbind
+    - rpc-statd
+    - nfs-server
